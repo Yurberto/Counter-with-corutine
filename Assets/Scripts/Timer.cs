@@ -1,26 +1,41 @@
 using System;
 using System.Collections;
-using TMPro;
 using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _text;
+    [SerializeField] private InputReceiver _receiver;
     [SerializeField] private int _start;
+    [SerializeField] private int _end;
     [SerializeField] private float _delay;
 
     private bool _isPaused;
+    private int _switchCounter;
+
+    public event Action<int> TimeChanged;
 
     private void Start()
     {
-        _text.text = "";
         _isPaused = false;
-        StartCoroutine(Countdown(_delay, _start));
+        _switchCounter = 0;
+
+        StartCoroutine(Countdown(_delay, _start, _end));
     }
 
-    public void SwitchState(int state)
+    private void OnEnable()
     {
-        _isPaused = Convert.ToBoolean(state);
+        _receiver.Mouse0Pressed += SwitchState;
+    }
+
+    private void OnDisable()
+    {
+        _receiver.Mouse0Pressed -= SwitchState;
+    }
+
+    public void SwitchState()
+    {
+        int stateDivider = 2;
+        _isPaused = Convert.ToBoolean(++_switchCounter % stateDivider);
     }
 
     private IEnumerator Countdown(float delay, int start = 0, int end = 200000)
@@ -35,15 +50,10 @@ public class Timer : MonoBehaviour
             }
             else 
             { 
-                DisplayCorutine(i);
                 yield return wait;
                 ++i;
+                TimeChanged?.Invoke(i);
             }
         }
-    }
-
-    private void DisplayCorutine(int count)
-    {
-        _text.text = count.ToString();
     }
 }
