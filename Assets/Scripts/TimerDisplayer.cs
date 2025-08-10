@@ -3,21 +3,21 @@ using UnityEngine;
 
 public class TimerDisplayer : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _text;
-    [SerializeField] private Timer _timer;
+    [SerializeField] private TimerController _timerController;
+    [SerializeField] private TextMeshProUGUI _timerText;
 
-    public void OnEnable()
+    private void OnEnable()
     {
-        _timer.TimeChanged += DisplayTimer;
+        _timerController.TimerChanged += DisplayTimer;
     }
 
-    public void OnDisable()
+    private void OnDisable()
     {
-        _timer.TimeChanged -= DisplayTimer;
+        _timerController.TimerChanged -= DisplayTimer;
     }
 
-    private void DisplayTimer(int count)
+    private void DisplayTimer(int counter)
     {
-        _text.text = count.ToString();
+        _timerText.text = counter.ToString();
     }
 }
