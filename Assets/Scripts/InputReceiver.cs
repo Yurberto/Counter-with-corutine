@@ -9,9 +9,9 @@ public class InputReceiver : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
-            MouseLeftClicked.Invoke();
+            MouseLeftClicked?.Invoke();
 
         else if (Input.GetKeyDown(KeyCode.Mouse1))
-            MouseRightClicked.Invoke();
+            MouseRightClicked?.Invoke();
     }
 }

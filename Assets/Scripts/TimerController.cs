@@ -60,7 +60,7 @@ public class TimerController : MonoBehaviour
 
         while (true)
         {
-            TimerChanged.Invoke(_timerCounter++);
+            TimerChanged?.Invoke(_timerCounter++);
             yield return wait;
         }
     }
